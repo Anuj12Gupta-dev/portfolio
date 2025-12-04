@@ -12,16 +12,14 @@ const techStack = [
   "FastAPI",
   "MongoDB",
   "PostgreSQL",
-  "AWS",
-  "Docker",
   "Tailwind CSS",
   "Redux",
   "Git",
   "REST APIs",
-  "GraphQL",
   "Prisma",
   "Firebase",
   "Clerk",
+  "Next Auth"
 ]
 
 export function HeroVisual() {

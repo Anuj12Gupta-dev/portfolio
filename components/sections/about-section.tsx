@@ -70,7 +70,7 @@ export function AboutSection() {
 
             <div className="flex gap-4 pt-4">
               <a
-                href="https://linkedin.com/in/anujgupta"
+                href="https://www.linkedin.com/in/anuj-gupta-b930a0264/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"

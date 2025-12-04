@@ -69,7 +69,7 @@ export function ContactSection() {
             </a>
 
             <a
-              href="https://linkedin.com/in/anujgupta"
+              href="https://www.linkedin.com/in/anuj-gupta-b930a0264/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 p-4 glass rounded-xl hover:border-primary/50 transition-colors group"
