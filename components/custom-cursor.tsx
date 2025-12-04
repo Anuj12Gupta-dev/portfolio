@@ -84,15 +84,6 @@ export function CustomCursor() {
       <div className="absolute w-full h-full rounded-full border-2 border-white" />
       {/* Inner dot */}
       <div className="w-1 h-1 rounded-full bg-white" />
-      {/* Click text */}
-      <div
-        ref={cursorTextRef}
-        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
-          isHoveringClickable ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <span className="text-[6px] font-bold uppercase tracking-wider text-white">Click</span>
-      </div>
     </div>
   )
 }

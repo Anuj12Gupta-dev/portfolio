@@ -78,7 +78,6 @@ export function HeroVisual() {
       className="relative w-[400px] h-[400px] cursor-pointer"
       style={{ perspective: "1000px" }}
       onClick={handleClick}
-      data-cursor="click"
     >
       {/* Shadow layers behind main box */}
       {[...Array(5)].map((_, i) => (
@@ -108,6 +107,8 @@ export function HeroVisual() {
           transformStyle: "preserve-3d",
           backfaceVisibility: "hidden",
         }}
+        data-cursor="click"
+        data-cursor-texture="transparent-circle"
       >
         <div
           className="w-72 h-72 rounded-2xl glass flex items-center justify-center border border-primary/30 relative overflow-hidden"
