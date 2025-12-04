@@ -5,13 +5,13 @@ import gsap from "gsap"
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorTextRef = useRef<HTMLDivElement>(null)
+  const followerRef = useRef<HTMLDivElement>(null)
   const [isHoveringClickable, setIsHoveringClickable] = useState(false)
 
   useEffect(() => {
     const cursor = cursorRef.current
-    const cursorText = cursorTextRef.current
-    if (!cursor || !cursorText) return
+    const follower = followerRef.current
+    if (!cursor || !follower) return
 
     // Mouse move handler
     const onMouseMove = (e: MouseEvent) => {
@@ -19,6 +19,14 @@ export function CustomCursor() {
         x: e.clientX,
         y: e.clientY,
         duration: 0.2,
+        ease: "power2.out",
+      })
+      
+      // Follower circle with delay for smooth trailing effect
+      gsap.to(follower, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.8,
         ease: "power2.out",
       })
     }
@@ -31,11 +39,23 @@ export function CustomCursor() {
         duration: 0.3,
         ease: "power2.out",
       })
+      
+      gsap.to(follower, {
+        scale: size === "click" ? 2.5 : 2,
+        duration: 0.3,
+        ease: "power2.out",
+      })
     }
 
     const handleMouseLeave = () => {
       setIsHoveringClickable(false)
       gsap.to(cursor, {
+        scale: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      })
+      
+      gsap.to(follower, {
         scale: 1,
         duration: 0.3,
         ease: "power2.out",
@@ -75,15 +95,27 @@ export function CustomCursor() {
   }, [])
 
   return (
-    <div
-      ref={cursorRef}
-      className="fixed top-0 left-0 w-5 h-5 pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center"
-      style={{ transform: "translate(-50%, -50%)" }}
-    >
-      {/* Outer ring */}
-      <div className="absolute w-full h-full rounded-full border-2 border-white" />
-      {/* Inner dot */}
-      <div className="w-1 h-1 rounded-full bg-white" />
-    </div>
+    <>
+      {/* Main cursor (follows mouse instantly) */}
+      <div
+        ref={cursorRef}
+        className="fixed top-0 left-0 w-5 h-5 pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center"
+        style={{ transform: "translate(-50%, -50%)" }}
+      >
+        {/* Outer ring */}
+        <div className="absolute w-full h-full rounded-full border-2 border-white" />
+        {/* Inner dot */}
+        <div className="w-1 h-1 rounded-full bg-white" />
+      </div>
+      
+      {/* Follower cursor (follows with delay) */}
+      <div
+        ref={followerRef}
+        className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9998] mix-blend-difference hidden md:flex items-center justify-center"
+        style={{ transform: "translate(-50%, -50%)" }}
+      >
+        <div className="absolute w-full h-full rounded-full border border-white/50" />
+      </div>
+    </>
   )
 }
