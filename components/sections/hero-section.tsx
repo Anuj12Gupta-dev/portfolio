@@ -6,6 +6,43 @@ import { MagneticButton } from "../magnetic-button"
 import { HeroVisual } from "../hero-visual"
 import { ArrowDown } from "lucide-react"
 
+// Component for animated dots
+function AnimatedDots() {
+  const dotsRef = useRef<(HTMLSpanElement | null)[]>([])
+
+  const handleMouseEnter = () => {
+    dotsRef.current.forEach((dot, index) => {
+      if (dot) {
+        gsap.to(dot, {
+          y: -20,
+          duration: 0.3,
+          delay: index * 0.1,
+          yoyo: true,
+          repeat: 1,
+          ease: "power2.out"
+        })
+      }
+    })
+  }
+
+  return (
+    <span 
+      className="inline-block cursor-pointer"
+      onMouseEnter={handleMouseEnter}
+    >
+      {Array.from({ length: 4 }).map((_, i) => (
+        <span
+          key={i}
+          ref={(el) => { dotsRef.current[i] = el; }}
+          className="inline-block"
+        >
+          .
+        </span>
+      ))}
+    </span>
+  )
+}
+
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
@@ -35,7 +72,7 @@ export function HeroSection() {
             <br />
             <span className="text-primary text-glow">Web Experiences</span>
             <br />
-            <span className="text-muted-foreground">with Next.js, AI & ....</span>
+            <span className="text-muted-foreground">with Next.js, AI & <AnimatedDots /></span>
           </h1>
 
           <p ref={subheadRef} className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
