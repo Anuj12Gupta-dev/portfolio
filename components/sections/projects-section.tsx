@@ -14,7 +14,7 @@ const projects = [
       "Collaborative coding interview platform with real-time code editor, video chat, and shared problem-solving sessions. Designed to help peers practice together efficiently.",
     tech: ["React", "Node.js", "MongoDB", "Stream Video", "Clerk", "Tailwind CSS"],
     link: "https://peer-prep-one.vercel.app/",
-    color: "from-cyan-500/20 to-blue-500/20",
+    color: "from-blue-400/20 to-purple-500/20",
   },
   {
     title: "Spendly",
@@ -24,7 +24,6 @@ const projects = [
     link: "https://spendly-one-rho.vercel.app/",
     color: "from-cyan-500/20 to-blue-500/20",
   },
-  
   {
     title: "PrepMate AI",
     description:
@@ -111,7 +110,7 @@ export function ProjectsSection() {
             >
               {/* Glow effect */}
               <div
-                className={`absolute -inset-px bg-linear-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
+                className={`absolute -inset-px bg-gradient-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
               />
 
               <div className="relative glass rounded-2xl p-6 h-full flex flex-col border border-border/50 group-hover:border-primary/30 transition-colors">
