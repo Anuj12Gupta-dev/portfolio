@@ -9,13 +9,22 @@ gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
+    title: "PeerPrep",
+    description:
+      "Collaborative coding interview platform with real-time code editor, video chat, and shared problem-solving sessions. Designed to help peers practice together efficiently.",
+    tech: ["React", "Node.js", "MongoDB", "Stream Video", "Clerk", "Tailwind CSS"],
+    link: "https://peer-prep-one.vercel.app/",
+    color: "from-cyan-500/20 to-blue-500/20",
+  },
+  {
     title: "Spendly",
     description:
       "AI-powered expense tracking app with smart insights and analytics. Uses intelligent scripts to scan and analyze spending patterns for better financial decisions.",
     tech: ["Next.js", "TypeScript", "Prisma", "Clerk", "Tailwind CSS"],
-    link: "https://wealth-git-main-anujguptas-projects.vercel.app/",
+    link: "https://spendly-one-rho.vercel.app/",
     color: "from-cyan-500/20 to-blue-500/20",
   },
+  
   {
     title: "PrepMate AI",
     description:
@@ -27,12 +36,13 @@ const projects = [
   {
     title: "Ghumkad Travels",
     description:
-      "AI-powered trip planner that generates complete travel itineraries in seconds. From destinations to daily activities—all intelligently curated.",
+      "AI-powered trip planner that generates complete travel itineraries in seconds—from destinations to daily activity breakdowns.",
     tech: ["React", "Node.js", "MongoDB", "JavaScript", "Tailwind CSS"],
     link: "https://ai-travel-planner-two-beta.vercel.app/",
     color: "from-blue-500/20 to-indigo-500/20",
   },
-]
+];
+
 
 export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -101,7 +111,7 @@ export function ProjectsSection() {
             >
               {/* Glow effect */}
               <div
-                className={`absolute -inset-px bg-gradient-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
+                className={`absolute -inset-px bg-linear-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
               />
 
               <div className="relative glass rounded-2xl p-6 h-full flex flex-col border border-border/50 group-hover:border-primary/30 transition-colors">
