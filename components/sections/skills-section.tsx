@@ -22,10 +22,22 @@ const skills = {
     { name: "Prisma", level: 75 },
     { name: "Firebase", level: 80 },
   ],
+  languages: [
+    { name: "Java", level: 75 },
+    { name: "C", level: 70 },
+    { name: "C++", level: 70 },
+    { name: "Python", level: 65 },
+  ],
   tools: [
     { name: "Git & GitHub", level: 85 },
     { name: "REST APIs", level: 90 },
     { name: "AI Integrations", level: 80 },
+  ],
+   blockchain: [
+    { name: "Solidity", level: 40 },
+    { name: "Ethereum", level: 40 },
+    { name: "MetaMask", level: 40 },
+    { name: "Ethers.js", level: 40 },
   ],
 }
 

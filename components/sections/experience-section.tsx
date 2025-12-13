@@ -83,7 +83,7 @@ export function ExperienceSection() {
 
         <div className="timeline-container relative">
           {/* Timeline line */}
-          <div className="timeline-line absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/50 to-transparent origin-top" />
+          <div className="timeline-line absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-primary via-primary/50 to-transparent origin-top" />
 
           {timeline.map((item, index) => (
             <div
