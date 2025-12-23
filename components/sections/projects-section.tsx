@@ -40,7 +40,7 @@ const projects = [
       "Tailwind CSS",
       "TanStack Query",
     ],
-    link: "https://socially-gilt-seven.vercel.app/login",
+    link: "https://socially-gilt-seven.vercel.app",
     color: "from-indigo-500/20 to-cyan-500/20",
   },
   {

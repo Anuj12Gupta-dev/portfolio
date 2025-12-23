@@ -105,20 +105,25 @@ export function SkillsSection() {
         </div>
 
         {/* Category tabs */}
-        <div className="flex justify-center gap-2 mb-12">
-          {(Object.keys(skills) as Array<keyof typeof skills>).map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={cn(
-                "px-6 py-2.5 text-sm font-medium rounded-full transition-all",
-                activeCategory === category ? "bg-primary text-primary-foreground" : "glass hover:bg-secondary/80",
-              )}
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </div>
+      <div className="mb-12">
+  <div className="flex gap-2 overflow-x-auto scrollbar-hide px-2 sm:justify-center sm:px-0">
+    {(Object.keys(skills) as Array<keyof typeof skills>).map((category) => (
+      <button
+        key={category}
+        onClick={() => setActiveCategory(category)}
+        className={cn(
+          "shrink-0 px-4 sm:px-6 py-2.5 text-sm font-medium rounded-full transition-all",
+          activeCategory === category
+            ? "bg-primary text-primary-foreground"
+            : "glass hover:bg-secondary/80"
+        )}
+      >
+        {category.charAt(0).toUpperCase() + category.slice(1)}
+      </button>
+    ))}
+  </div>
+</div>
+
 
         {/* Skills grid */}
         <div className="skills-grid max-w-3xl mx-auto space-y-4">

@@ -93,7 +93,7 @@ export function HeroSection() {
 
             <MagneticButton>
               <a
-                href="/Anuj_Gupta_Resume.pdf"
+                href="/Anuj_Gupta_Full_Stack_Developer_Resume.pdf"
                 download
                 className="inline-flex items-center gap-2 px-7 py-3.5 glass font-medium rounded-full hover:bg-secondary/80 transition-colors"
               >
