@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
+import { useIsMobile } from '../hooks/use-mobile';
 
 interface ASMRStaticBackgroundProps {
   children?: ReactNode;
@@ -11,7 +12,8 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
   const [isVisible, setIsVisible] = useState(true);
   
   // Check for performance conditions outside useEffect to make them available in JSX
-  const isMobile = typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false;
+  const isMobileHook = useIsMobile();
+  const isMobile = isMobileHook || (typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false);
   const isLowEnd = typeof navigator !== 'undefined' && 
     ((navigator.hardwareConcurrency || 4) <= 4 && 
     // @ts-ignore
@@ -89,12 +91,13 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
         this.rotationSpeed = (Math.random() - 0.5) * 0.05;
       }
 
-      update() {
+      update(isMobile: boolean) {
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < MAGNETIC_RADIUS) {
+        // Only apply magnetic effects on non-mobile screens
+        if (!isMobile && dist < MAGNETIC_RADIUS) {
           const force = (MAGNETIC_RADIUS - dist) / MAGNETIC_RADIUS;
           
           // Magnetic center pull
@@ -180,7 +183,7 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach(p => {
-        p.update();
+        p.update(isMobile);
         p.draw();
       });
 

@@ -1,8 +1,10 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useIsMobile } from "../hooks/use-mobile"
 
 export function CustomCursor() {
+  const isMobile = useIsMobile()
   const cursorRef = useRef<HTMLDivElement>(null)
   const followerRef = useRef<HTMLDivElement>(null)
   const [isHoveringClickable, setIsHoveringClickable] = useState(false)
@@ -112,7 +114,7 @@ export function CustomCursor() {
     }
   }, [])
   
-  if (shouldHideCursor) {
+  if (shouldHideCursor || isMobile) {
     return null
   }
   
