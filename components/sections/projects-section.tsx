@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ExternalLink } from "lucide-react";
@@ -51,6 +51,9 @@ const projects = [
     link: "https://spendly-one-rho.vercel.app/",
     color: "from-cyan-500/20 to-blue-500/20",
   },
+];
+
+const secondaryProjects = [
   {
     title: "PrepMate AI",
     description:
@@ -91,9 +94,16 @@ export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
-      cardsRef.current.forEach((card) => {
+      // Only apply 3D effect to visible cards
+      const allCards = showAllProjects 
+        ? [...cardsRef.current.slice(0, projects.length), ...cardsRef.current.slice(projects.length)]
+        : cardsRef.current.slice(0, projects.length);
+      
+      allCards.forEach((card) => {
         if (!card) return;
 
         card.addEventListener("mousemove", (e) => {
@@ -122,10 +132,36 @@ export function ProjectsSection() {
           });
         });
       });
+      
+      // Animate secondary projects when they appear
+      if (showAllProjects) {
+        const secondaryCards = cardsRef.current.slice(projects.length);
+        gsap.fromTo(
+          secondaryCards,
+          { 
+            opacity: 0, 
+            y: 30,
+            rotateX: -10,
+            rotateY: 0,
+            scale: 0.95
+          },
+          { 
+            opacity: 1, 
+            y: 0,
+            rotateX: 0,
+            rotateY: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power3.out",
+            delay: 0.1
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [showAllProjects]);
 
   return (
     <section id="projects" ref={sectionRef} className="py-32 relative">
@@ -197,6 +233,75 @@ export function ProjectsSection() {
             </div>
           ))}
         </div>
+
+        {
+          showAllProjects && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 md:mt-6">
+          {secondaryProjects.map((project, index) => (
+            <div
+              key={project.title}
+              ref={(el) => {
+                cardsRef.current[projects.length + index] = el;
+              }}
+              className="reveal group relative"
+              style={{
+                perspective: "1000px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* Glow effect */}
+              <div
+                className={`absolute -inset-px bg-gradient-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`}
+              />
+
+              <div className="relative glass rounded-2xl p-6 h-full flex flex-col border border-border/50 group-hover:border-primary/30 transition-colors">
+                {/* Project title */}
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                  {project.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">
+                  {project.description}
+                </p>
+
+                {/* Tech stack */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-xs px-2.5 py-1 bg-secondary rounded-full text-muted-foreground"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Links */}
+                <div className="flex gap-4">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Live Demo
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+          )
+        }
+
+        <button 
+          className="mt-8 mx-auto block px-6 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+          onClick={() => setShowAllProjects(!showAllProjects)}
+        >
+          {showAllProjects ? "Show Less" : "View All Projects"}
+        </button>
       </div>
     </section>
   );

@@ -22,7 +22,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
+    <section id="contact" className="pt-32 pb-10 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,_oklch(0.75_0.15_195_/_0.1)_0%,_transparent_70%)] pointer-events-none" />
 

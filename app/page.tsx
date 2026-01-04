@@ -7,6 +7,7 @@ import { ContactSection } from "@/components/sections/contact-section"
 import { Navigation } from "@/components/navigation"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { CustomCursor } from "@/components/custom-cursor"
+import ASMRStaticBackground from "@/components/asmr-background"
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
         <CustomCursor />
         <Navigation />
         <main>
-          <HeroSection />
+          <ASMRStaticBackground><HeroSection /></ASMRStaticBackground>
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
