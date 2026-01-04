@@ -40,7 +40,7 @@ export function AboutSection() {
   }, [])
 
   return (
-    <section id="about" ref={sectionRef} className="py-32 relative max-h-screen">
+    <section id="about" ref={sectionRef} className="py-32 relative">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Bio */}

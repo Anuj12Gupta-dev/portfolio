@@ -8,10 +8,9 @@ export function CustomCursor() {
   const [isHoveringClickable, setIsHoveringClickable] = useState(false)
 
   useEffect(() => {
-    // Check if user prefers reduced motion or is on mobile
+    // Check if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isMobile = window.matchMedia('(max-width: 767px)').matches
-    if (prefersReducedMotion || isMobile) return
+    if (prefersReducedMotion) return
     
     const cursor = cursorRef.current
     const follower = followerRef.current
@@ -96,35 +95,20 @@ export function CustomCursor() {
     }
   }, [])
 
-  // Check if user prefers reduced motion or is on mobile
+  // Check if user prefers reduced motion
   const [shouldHideCursor, setShouldHideCursor] = useState(false)
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-      const mobileQuery = window.matchMedia('(max-width: 767px)')
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+      setShouldHideCursor(mediaQuery.matches)
       
-      const updateState = () => {
-        setShouldHideCursor(motionQuery.matches || mobileQuery.matches)
+      const handleChange = (e: MediaQueryListEvent) => {
+        setShouldHideCursor(e.matches)
       }
       
-      updateState()
-      
-      const handleMotionChange = (e: MediaQueryListEvent) => {
-        updateState()
-      }
-      
-      const handleMobileChange = (e: MediaQueryListEvent) => {
-        updateState()
-      }
-      
-      motionQuery.addEventListener('change', handleMotionChange)
-      mobileQuery.addEventListener('change', handleMobileChange)
-      
-      return () => {
-        motionQuery.removeEventListener('change', handleMotionChange)
-        mobileQuery.removeEventListener('change', handleMobileChange)
-      }
+      mediaQuery.addEventListener('change', handleChange)
+      return () => mediaQuery.removeEventListener('change', handleChange)
     }
   }, [])
   

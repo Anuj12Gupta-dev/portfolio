@@ -101,14 +101,7 @@ export function SplineScene({ scene, className, fallback, alwaysVisible = false 
   
   // Show fallback or nothing if not visible
   if (!isVisible || (!isInView && !alwaysVisible)) {
-    return fallback || (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
-        <div className="text-center">
-          <div className="text-gray-400 mb-2">3D Scene Preview</div>
-          <div className="text-sm text-gray-500">Scroll to view</div>
-        </div>
-      </div>
-    )
+    return null
   }
   
   return (

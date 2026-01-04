@@ -23,9 +23,6 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
   const PARTICLE_COUNT = prefersReducedMotion ? 0 : 
     isMobile || isLowEnd ? 200 : 1000;
   
-  // On mobile, particles should be static (no interaction)
-  const isStatic = isMobile;
-  
   useEffect(() => {
     // Set up Intersection Observer to pause canvas when not visible
     const container = canvasRef.current?.parentElement;
@@ -169,12 +166,6 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         particles.push(new Particle());
       }
-      
-      // If static mode, reset mouse position to off-screen to avoid any interaction
-      if (isStatic) {
-        mouse.x = -1000;
-        mouse.y = -1000;
-      }
     };
 
     const render = () => {
@@ -189,10 +180,7 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach(p => {
-        // Only update particles if not on mobile (static particles on mobile)
-        if (!isStatic) {
-          p.update();
-        }
+        p.update();
         p.draw();
       });
 
@@ -200,16 +188,12 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Only update mouse position if not on mobile
-      if (!isStatic) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      }
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      // Only update touch position if not on mobile
-      if (e.touches[0] && !isStatic) {
+      if (e.touches[0]) {
         mouse.x = e.touches[0].clientX;
         mouse.y = e.touches[0].clientY;
       }
