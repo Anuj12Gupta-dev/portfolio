@@ -1,90 +1,39 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { MagneticButton } from "../magnetic-button"
-import { HeroVisual } from "../hero-visual"
-import { ArrowDown } from "lucide-react"
-
-// Component for animated dots
-function AnimatedDots() {
-  const dotsRef = useRef<(HTMLSpanElement | null)[]>([])
-
-  const handleMouseEnter = () => {
-    dotsRef.current.forEach((dot, index) => {
-      if (dot) {
-        gsap.to(dot, {
-          y: -20,
-          duration: 0.3,
-          delay: index * 0.1,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.out"
-        })
-      }
-    })
-  }
-
-  return (
-    <span 
-      className="inline-block cursor-pointer"
-      onMouseEnter={handleMouseEnter}
-    >
-      {Array.from({ length: 4 }).map((_, i) => (
-        <span
-          key={i}
-          ref={(el) => { dotsRef.current[i] = el; }}
-          className="inline-block"
-        >
-          .
-        </span>
-      ))}
-    </span>
-  )
-}
+import { SplineScene } from "@/components/ui/splite";
+import { Card } from "@/components/ui/card";
+import { Spotlight } from "@/components/ui/spotlight";
+import { MagneticButton } from "../magnetic-button";
+import { ArrowDown } from "lucide-react";
 
 export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const headlineRef = useRef<HTMLHeadingElement>(null)
-  const subheadRef = useRef<HTMLParagraphElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 })
-
-    tl.fromTo(headlineRef.current, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" })
-      .fromTo(subheadRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.6")
-      .fromTo(ctaRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
-  }, [])
-
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Subtle radial gradient background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_oklch(0.15_0.02_195)_0%,_transparent_70%)]" />
+    <Card className="relative w-full min-h-screen bg-black/[0.96] overflow-hidden px-6 sm:px-10 lg:px-[10%]">
+      <Spotlight
+        className="-top-40 left-0 sm:left-40 md:left-60 md:-top-20"
+        fill="white"
+      />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 grid lg:grid-cols-2 gap-16 items-center">
-        <div className="space-y-8">
-          <h1
-            ref={headlineRef}
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight"
-          >
-            Building Scalable
-            <br />
-            <span className="text-primary text-glow">Web Experiences</span>
-            <br />
-            <span className="text-muted-foreground">with Next.js, AI & <AnimatedDots /></span>
-          </h1>
+      <div className="flex flex-col md:flex-row min-h-screen">
+        {/* LEFT CONTENT */}
+        <div className="flex-1 relative z-10 flex flex-col justify-center gap-6 sm:gap-8 py-20 md:py-0">
+          <div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+              Anuj Gupta
+            </h1>
 
-          <p ref={subheadRef} className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
-            Full-Stack Developer crafting modern, performant applications. Specializing in React ecosystems, AI
-            integrations, and intelligent user experiences.
-          </p>
+            <p className="mt-4 text-neutral-300 max-w-lg text-sm sm:text-base">
+              Full Stack Developer & Computer Science Undergraduate. Building
+              scalable backend systems and immersive frontend interfaces.
+            </p>
+          </div>
 
-          <div ref={ctaRef} className="flex flex-wrap gap-4 pt-4">
+          {/* CTA BUTTONS */}
+          <div className="flex flex-wrap gap-3">
             <MagneticButton>
               <a
                 href="#projects"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground font-medium rounded-full transition-all hover:shadow-[0_0_30px_oklch(0.75_0.15_195_/_0.4)]"
+                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#dcd3d3] text-primary-foreground font-medium rounded-full transition-all"
               >
                 View Projects
                 <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
@@ -95,7 +44,7 @@ export function HeroSection() {
               <a
                 href="/Anuj_Gupta_Full_Stack_Developer_Resume.pdf"
                 download
-                className="inline-flex items-center gap-2 px-7 py-3.5 glass font-medium rounded-full hover:bg-secondary/80 transition-colors"
+                className="inline-flex items-center gap-2 px-7 py-3.5 font-medium rounded-full border border-white/80 hover:border-white transition-colors"
               >
                 Download Resume
               </a>
@@ -103,16 +52,14 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="hidden lg:flex justify-center items-center">
-          <HeroVisual />
+        {/* RIGHT CONTENT */}
+        <div className="flex-1 relative hidden md:block">
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground">
-        <span className="text-xs uppercase tracking-widest">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-primary to-transparent" />
-      </div>
-    </section>
-  )
+    </Card>
+  );
 }

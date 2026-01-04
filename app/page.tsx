@@ -16,12 +16,12 @@ export default function Home() {
         <CustomCursor />
         <Navigation />
         <main>
-          <ASMRStaticBackground><HeroSection /></ASMRStaticBackground>
+          <HeroSection />
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
           <ExperienceSection />
-          <ContactSection />
+          <ASMRStaticBackground><ContactSection /></ASMRStaticBackground>
         </main>
       </div>
     </SmoothScroll>
