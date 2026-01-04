@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import gsap from "gsap"
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
@@ -9,57 +8,57 @@ export function CustomCursor() {
   const [isHoveringClickable, setIsHoveringClickable] = useState(false)
 
   useEffect(() => {
+    // Check if user prefers reduced motion or is on mobile
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    if (prefersReducedMotion || isMobile) return
+    
     const cursor = cursorRef.current
     const follower = followerRef.current
     if (!cursor || !follower) return
-
-    // Mouse move handler
+    
+    // Throttle mouse move events to reduce performance impact
+    let animationFrameId: number
+    let mouseX = 0
+    let mouseY = 0
+    let followerX = 0
+    let followerY = 0
+    
+    // Mouse move handler with throttling
     const onMouseMove = (e: MouseEvent) => {
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.2,
-        ease: "power2.out",
-      })
+      mouseX = e.clientX
+      mouseY = e.clientY
       
-      // Follower circle with delay for smooth trailing effect
-      gsap.to(follower, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.8,
-        ease: "power2.out",
+      // Cancel any existing animation frame
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+      
+      // Update cursor position on next animation frame
+      animationFrameId = requestAnimationFrame(() => {
+        cursor.style.transform = `translate3d(${mouseX - 10}px, ${mouseY - 10}px, 0)`
+        
+        // Update follower position with delay
+        followerX += (mouseX - followerX) * 0.12
+        followerY += (mouseY - followerY) * 0.12
+        follower.style.transform = `translate3d(${followerX - 16}px, ${followerY - 16}px, 0)`
       })
     }
 
     // Find clickable elements and add hover listeners
     const handleMouseEnter = (size: "large" | "click") => {
       setIsHoveringClickable(size === "click")
-      gsap.to(cursor, {
-        scale: size === "click" ? 2.5 : 2,
-        duration: 0.3,
-        ease: "power2.out",
-      })
       
-      gsap.to(follower, {
-        scale: size === "click" ? 2.5 : 2,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      const scale = size === "click" ? 2.5 : 2
+      cursor.style.transform = `scale(${scale})`
+      follower.style.transform = `scale(${scale})`
     }
 
     const handleMouseLeave = () => {
       setIsHoveringClickable(false)
-      gsap.to(cursor, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      })
       
-      gsap.to(follower, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      cursor.style.transform = 'scale(1)'
+      follower.style.transform = 'scale(1)'
     }
 
     // Setup event listeners
@@ -90,10 +89,49 @@ export function CustomCursor() {
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove)
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
       observer.disconnect()
     }
   }, [])
 
+  // Check if user prefers reduced motion or is on mobile
+  const [shouldHideCursor, setShouldHideCursor] = useState(false)
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+      const mobileQuery = window.matchMedia('(max-width: 767px)')
+      
+      const updateState = () => {
+        setShouldHideCursor(motionQuery.matches || mobileQuery.matches)
+      }
+      
+      updateState()
+      
+      const handleMotionChange = (e: MediaQueryListEvent) => {
+        updateState()
+      }
+      
+      const handleMobileChange = (e: MediaQueryListEvent) => {
+        updateState()
+      }
+      
+      motionQuery.addEventListener('change', handleMotionChange)
+      mobileQuery.addEventListener('change', handleMobileChange)
+      
+      return () => {
+        motionQuery.removeEventListener('change', handleMotionChange)
+        mobileQuery.removeEventListener('change', handleMobileChange)
+      }
+    }
+  }, [])
+  
+  if (shouldHideCursor) {
+    return null
+  }
+  
   return (
     <>
       {/* Main cursor (follows mouse instantly) */}

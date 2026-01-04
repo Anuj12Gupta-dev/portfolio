@@ -57,6 +57,7 @@ export function HeroSection() {
           <SplineScene
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
+            alwaysVisible={true}
           />
         </div>
       </div>

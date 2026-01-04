@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 
 const techStack = [
@@ -30,7 +30,7 @@ export function RotatingTechBox() {
   const innerRef = useRef<HTMLDivElement>(null)
   const isAnimating = useRef(false)
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (isAnimating.current) return
     isAnimating.current = true
 
@@ -73,7 +73,7 @@ export function RotatingTechBox() {
       yoyo: true,
       repeat: 1,
     })
-  }
+  }, [currentIndex])
 
   return (
     <div

@@ -21,7 +21,7 @@ const projects = [
       "Tailwind CSS",
     ],
     link: "https://peer-prep-one.vercel.app/",
-    color: "from-blue-400/20 to-purple-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
   {
     title: "Socially",
@@ -41,7 +41,7 @@ const projects = [
       "TanStack Query",
     ],
     link: "https://socially-gilt-seven.vercel.app",
-    color: "from-indigo-500/20 to-cyan-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
   {
     title: "Spendly",
@@ -49,9 +49,9 @@ const projects = [
       "AI-powered expense tracking app with smart insights and analytics. Uses intelligent scripts to scan and analyze spending patterns for better financial decisions.",
     tech: ["Next.js", "TypeScript", "Prisma", "Clerk", "Tailwind CSS"],
     link: "https://spendly-one-rho.vercel.app/",
-    color: "from-cyan-500/20 to-blue-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
-];
+]
 
 const secondaryProjects = [
   {
@@ -60,7 +60,7 @@ const secondaryProjects = [
       "Interview preparation platform that generates tailored questions and answers based on job descriptions and experience level. Built to help candidates ace their interviews.",
     tech: ["React", "TypeScript", "Firebase", "Tailwind CSS"],
     link: "https://ai-mock-interview-ebba4.web.app/",
-    color: "from-teal-500/20 to-cyan-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
   {
     title: "CrowdFund DApp",
@@ -78,7 +78,7 @@ const secondaryProjects = [
       "Web3",
     ],
     link: "https://crowdfund-lac.vercel.app/",
-    color: "from-emerald-400/20 to-teal-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
   {
     title: "Ghumkad Travels",
@@ -86,9 +86,10 @@ const secondaryProjects = [
       "AI-powered trip planner that generates complete travel itineraries in seconds—from destinations to daily activity breakdowns.",
     tech: ["React", "Node.js", "MongoDB", "JavaScript", "Tailwind CSS"],
     link: "https://ai-travel-planner-two-beta.vercel.app/",
-    color: "from-blue-500/20 to-indigo-500/20",
+    color: "from-white/10 via-white/5 to-transparent",
   },
-];
+]
+
 
 export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);

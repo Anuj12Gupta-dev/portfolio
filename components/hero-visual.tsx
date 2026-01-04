@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 
 const techStack = [
@@ -28,7 +28,7 @@ export function HeroVisual() {
   const boxRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (isAnimating || !boxRef.current) return
 
     setIsAnimating(true)
@@ -70,7 +70,7 @@ export function HeroVisual() {
         },
       })
     })
-  }
+  }, [isAnimating])
 
   return (
     <div

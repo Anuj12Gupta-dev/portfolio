@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, useState, ReactNode } from 'react';
 
 interface ASMRStaticBackgroundProps {
   children?: ReactNode;
@@ -8,7 +8,43 @@ interface ASMRStaticBackgroundProps {
 
 const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  const [isVisible, setIsVisible] = useState(true);
+  
+  // Check for performance conditions outside useEffect to make them available in JSX
+  const isMobile = typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false;
+  const isLowEnd = typeof navigator !== 'undefined' && 
+    ((navigator.hardwareConcurrency || 4) <= 4 && 
+    // @ts-ignore
+    (navigator.deviceMemory || 4) <= 4);
+  const prefersReducedMotion = typeof window !== 'undefined' ? 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+  
+  // Adjust particle count based on performance conditions
+  const PARTICLE_COUNT = prefersReducedMotion ? 0 : 
+    isMobile || isLowEnd ? 200 : 1000;
+  
+  // On mobile, particles should be static (no interaction)
+  const isStatic = isMobile;
+  
+  useEffect(() => {
+    // Set up Intersection Observer to pause canvas when not visible
+    const container = canvasRef.current?.parentElement;
+    if (!container) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1, rootMargin: '100px' } // Start again when 10% visible or 100px before entering viewport
+    );
+    
+    observer.observe(container);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -22,8 +58,7 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
     let particles: Particle[] = [];
     const mouse = { x: -1000, y: -1000 };
 
-    const PARTICLE_COUNT = 1000;
-    const MAGNETIC_RADIUS = 280;
+    const MAGNETIC_RADIUS = isMobile ? 150 : 280;
     const VORTEX_STRENGTH = 0.07;
     const PULL_STRENGTH = 0.12;
 
@@ -134,15 +169,30 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         particles.push(new Particle());
       }
+      
+      // If static mode, reset mouse position to off-screen to avoid any interaction
+      if (isStatic) {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      }
     };
 
     const render = () => {
+      // Only render if component is visible in the viewport
+      if (!isVisible) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      
       // Create slight motion blur effect
       ctx.fillStyle = 'rgba(10, 10, 12, 0.18)';
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach(p => {
-        p.update();
+        // Only update particles if not on mobile (static particles on mobile)
+        if (!isStatic) {
+          p.update();
+        }
         p.draw();
       });
 
@@ -150,12 +200,16 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      // Only update mouse position if not on mobile
+      if (!isStatic) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches[0]) {
+      // Only update touch position if not on mobile
+      if (e.touches[0] && !isStatic) {
         mouse.x = e.touches[0].clientX;
         mouse.y = e.touches[0].clientY;
       }
@@ -174,14 +228,18 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({ children })
       window.removeEventListener('touchmove', handleTouchMove);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isVisible]); // Add isVisible to dependency array so animation pauses when not visible
 
   return (
     <div className="relative w-full h-full bg-[#0a0a0c] overflow-hidden cursor-none">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 block w-full h-full"
-      />
+      {PARTICLE_COUNT > 0 ? (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 block w-full h-full"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-[#0a0a0c]" />
+      )}
       
       {/* Optional UI Overlay */}
      {children}
