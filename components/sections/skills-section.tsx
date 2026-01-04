@@ -81,7 +81,7 @@ export function SkillsSection() {
   }, [activeCategory])
 
   return (
-    <section id="skills" ref={sectionRef} className="py-32 relative overflow-hidden">
+    <section id="skills" ref={sectionRef} className="py-32 relative overflow-hidden max-h-screen">
       {/* Tech marquee */}
       <div className="absolute top-0 left-0 right-0 py-4 border-y border-border/30 overflow-hidden">
         <div className="flex animate-marquee gap-12">

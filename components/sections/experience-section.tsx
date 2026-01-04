@@ -70,7 +70,7 @@ export function ExperienceSection() {
   }, [])
 
   return (
-    <section id="experience" ref={sectionRef} className="py-32 relative">
+    <section id="experience" ref={sectionRef} className="py-32 relative ">
       <div className="max-w-4xl mx-auto px-6">
         <div className="reveal text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">

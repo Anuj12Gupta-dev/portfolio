@@ -40,7 +40,7 @@ export function AboutSection() {
   }, [])
 
   return (
-    <section id="about" ref={sectionRef} className="py-32 relative">
+    <section id="about" ref={sectionRef} className="py-32 relative max-h-screen">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Bio */}
@@ -73,13 +73,13 @@ export function AboutSection() {
                 href="https://www.linkedin.com/in/anuj-gupta-b930a0264/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-sm md:text-base text-white hover:text-primary transition-colors"
               >
                 LinkedIn →
               </a>
               <a
                 href="mailto:anujguptaaj123@gmail.com"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-sm  md:text-base text-white hover:text-primary transition-colors"
               >
                 Email →
               </a>

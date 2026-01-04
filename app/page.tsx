@@ -16,11 +16,11 @@ export default function Home() {
         <CustomCursor />
         <Navigation />
         <main>
-          <HeroSection />
-          <AboutSection />
-          <SkillsSection />
-          <ProjectsSection />
-          <ExperienceSection />
+          <ASMRStaticBackground><HeroSection /></ASMRStaticBackground>
+          <ASMRStaticBackground><AboutSection /></ASMRStaticBackground>
+          <ASMRStaticBackground><SkillsSection /></ASMRStaticBackground>
+          <ASMRStaticBackground><ProjectsSection /></ASMRStaticBackground>
+          <ASMRStaticBackground><ExperienceSection /></ASMRStaticBackground>
           <ASMRStaticBackground><ContactSection /></ASMRStaticBackground>
         </main>
       </div>
