@@ -1,47 +1,37 @@
 import { SiteHeader } from "@/components/site-header";
+import { MotionProvider } from "@/components/motion-provider";
 import { SiteFooter } from "@/components/site-footer";
-import { RevealObserver } from "@/components/reveal-observer";
-import { DotBand, Rule } from "@/components/primitives";
+import { DottedBand } from "@/components/ui";
 import { Hero } from "@/components/sections/hero";
 import { Profile } from "@/components/sections/profile";
 import { Experience } from "@/components/sections/experience";
 import { Work } from "@/components/sections/work";
 import { Capabilities } from "@/components/sections/capabilities";
-import { Education } from "@/components/sections/education";
-import { Recognition } from "@/components/sections/recognition";
+import { Credentials } from "@/components/sections/credentials";
 import { Contact } from "@/components/sections/contact";
 import { profile, projects } from "@/lib/content";
 
-/**
- * Section separation rotates between three devices so the rhythm never
- * settles into a single repeated gesture: a dashed rule, a dot-grid
- * band, and plain whitespace.
- */
 export default function Home() {
   return (
     <>
       <SiteHeader />
 
-      <main>
-        <Hero />
-        <DotBand />
-        <Profile />
-        <Rule />
-        <Experience />
-        <DotBand />
-        <Work />
-        <Rule />
-        <Capabilities />
-        <Rule />
-        <Education />
-        <Rule />
-        <Recognition />
-        <DotBand />
-        <Contact />
-      </main>
+      <MotionProvider>
+        <main>
+          <Hero />
+          <Profile />
+          <DottedBand />
+          <Experience />
+          <DottedBand />
+          <Work />
+          <Capabilities />
+          <DottedBand />
+          <Credentials />
+          <Contact />
+        </main>
+      </MotionProvider>
 
       <SiteFooter />
-      <RevealObserver />
 
       <script
         type="application/ld+json"
@@ -75,10 +65,10 @@ export default function Home() {
               "Next.js",
               "TypeScript",
             ],
-            subjectOf: projects.map((project) => ({
+            subjectOf: projects.map((p) => ({
               "@type": "SoftwareApplication",
-              name: project.title,
-              url: project.href,
+              name: p.title,
+              url: p.href,
               applicationCategory: "WebApplication",
             })),
           }),

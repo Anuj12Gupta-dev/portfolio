@@ -1,45 +1,97 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — dark only
-   A single desaturated-cool ramp. Never pure black, never pure
-   white. Hierarchy lives in type, not in colour.
+   DESIGN TOKENS
+
+   One system, two themes. Light is the default; dark is a
+   genuine redesign of the same language rather than an
+   inversion — different elevation model (borders + hairlight
+   instead of shadows), different accent luminance, different
+   line weights against the surface.
    ============================================================ */
-:root {
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --paper: #e9eae6; /* page */
+  --surface: #f3f4f1; /* raised card */
+  --sunken: #dee0da; /* icon tiles, inset panels */
+
+  --ink: #0f1a26; /* headings */
+  --ink-2: #1e2c3e;
+  --body: #42566e; /* paragraph text */
+  /* 4.72:1 against --surface, the lightest background it ever sits on,
+     so small mono labels clear WCAG AA everywhere. */
+  --muted: #5d6e85; /* labels, metadata */
+
+  --line: #c7cbc4; /* hairline */
+  --line-2: #adb4bd; /* emphasised hairline */
+  --blueprint: #93a3b8; /* dashed frame + crosshairs */
+
+  --accent: #7c90ab; /* filled pills, tags, badges */
+  --accent-soft: #7c90ab29;
+  --on-accent: #0f1a26;
+
+  --shadow-sm: 0 1px 2px rgb(15 26 38 / 0.05);
+  --shadow-md:
+    0 4px 16px -2px rgb(15 26 38 / 0.08), 0 2px 6px -2px rgb(15 26 38 / 0.05);
+  --shadow-lg:
+    0 18px 48px -14px rgb(15 26 38 / 0.18), 0 6px 14px -6px rgb(15 26 38 / 0.07);
+  --hairlight: 0 0 0 0 transparent;
+}
+
+[data-theme="dark"] {
   color-scheme: dark;
 
-  --ink: #0a0b0d; /* page */
-  --ink-2: #101216; /* raised slab */
-  --ink-3: #16181d; /* hover fill */
+  --paper: #0b0f14;
+  --surface: #121821;
+  --sunken: #18202b;
 
-  --line: #22252b; /* hairline */
-  --line-2: #2e323b; /* hairline, emphasised */
+  --ink: #eef1f4;
+  --ink-2: #d5dce4;
+  --body: #a2b0c2;
+  --muted: #7d8da1;
 
-  /* Text tones. Both clear WCAG AA against --ink:
-     --muted 4.9:1, --soft 7.5:1. --line-2 is for rules and
-     decorative glyphs only, never for text. */
-  --muted: #797f8b; /* tertiary text */
-  --soft: #9aa0ac; /* secondary text */
-  --bone: #e4e5e0; /* primary text */
+  --line: #202935;
+  --line-2: #2f3b4a;
+  --blueprint: #3a4859;
 
-  --accent: #8da2be; /* used sparingly: status, focus, marks */
+  --accent: #6e86a6;
+  --accent-soft: #6e86a626;
+  --on-accent: #080c11;
+
+  /* Dark elevation reads through a top hairlight, not a drop shadow. */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 16px -4px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 24px 64px -20px rgb(0 0 0 / 0.75);
+  --hairlight: inset 0 1px 0 rgb(255 255 255 / 0.045);
 }
 
 @theme inline {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
-  --color-ink-3: var(--ink-3);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
   --color-line: var(--line);
   --color-line-2: var(--line-2);
-  --color-muted: var(--muted);
-  --color-soft: var(--soft);
-  --color-bone: var(--bone);
+  --color-blueprint: var(--blueprint);
   --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
 
-  /* the one easing used everywhere — a long, settled decay */
+  --radius-card: 16px;
+  --radius-tile: 12px;
+
+  --shadow-soft: var(--shadow-sm);
+  --shadow-card: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -54,137 +106,139 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    /* clears the fixed header when jumping to an anchor */
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6rem;
   }
 
   body {
-    background-color: var(--ink);
-    color: var(--bone);
+    background-color: var(--paper);
+    color: var(--body);
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
     overflow-x: hidden;
-  }
-
-  /* Visible, on-brand focus. Never remove the ring. */
-  :focus-visible {
-    outline: 1px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  ::selection {
-    background: var(--bone);
-    color: var(--ink);
   }
 
   h1,
   h2,
   h3,
   h4 {
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: -0.028em;
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
 }
 
 /* ============================================================
-   TYPOGRAPHY PRIMITIVES
+   TYPE PRIMITIVES
    ============================================================ */
-
-/* Wide-tracked mono label. The "specification" voice. */
 .eyebrow {
   font-family: var(--font-mono), monospace;
-  font-size: 0.6875rem; /* 11px */
+  font-size: 0.6875rem;
   line-height: 1;
-  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.18em;
   color: var(--muted);
 }
 
-/* Display: light weight at huge size, tight tracking. */
-.display {
-  font-weight: 500;
-  letter-spacing: -0.045em;
-  line-height: 0.86;
-}
-
-.headline {
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
-}
-
-/* Measure cap — prose should never run past a comfortable line. */
 .measure {
-  max-width: 68ch;
-}
-
-.measure-tight {
-  max-width: 52ch;
+  max-width: 62ch;
 }
 
 /* ============================================================
-   SURFACE PRIMITIVES
+   BLUEPRINT TEXTURES
+   The technical-drawing layer: dashed frames, crosshairs, dot
+   fields and faint graph paper. All decorative, all 1px.
    ============================================================ */
-
-/* The dot-grid separator band — graph-paper texture, no decoration. */
-.dot-band {
-  background-image: radial-gradient(var(--line-2) 1px, transparent 1px);
-  background-size: 14px 14px;
+.dot-field {
+  background-image: radial-gradient(var(--blueprint) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.28;
 }
 
-/* Animated underline that grows from the left on hover. */
-.link-underline {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  transition: background-size 400ms var(--ease-settle);
+.grid-field {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
-.link-underline:hover,
-.link-underline:focus-visible {
-  background-size: 100% 1px;
+/* Radial fade so textures never reach a hard edge. */
+.fade-edges {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 78%);
+  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 78%);
+}
+
+/* Gentler variant — keeps the world map legible as a map rather than
+   collapsing it into a blob at the centre. */
+.fade-edges-soft {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 62%, transparent 96%);
+  mask-image: radial-gradient(ellipse at center, #000 62%, transparent 96%);
 }
 
 /* ============================================================
-   SCROLL REVEAL
-   Driven by a single IntersectionObserver; CSS does the work.
+   SURFACES
    ============================================================ */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(12px);
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm), var(--hairlight);
   transition:
-    opacity 700ms var(--ease-settle),
-    transform 700ms var(--ease-settle);
-  transition-delay: var(--reveal-delay, 0ms);
+    box-shadow 500ms var(--ease-settle),
+    border-color 500ms var(--ease-settle),
+    transform 500ms var(--ease-settle);
 }
 
-[data-reveal][data-shown="true"] {
-  opacity: 1;
-  transform: none;
+.card-hover:hover {
+  border-color: var(--line-2);
+  box-shadow: var(--shadow-md), var(--hairlight);
+  transform: translateY(-2px);
 }
 
-/* Hero line reveal — text rises out from behind a mask. */
-@keyframes line-rise {
-  from {
-    transform: translateY(100%);
-  }
+/* ============================================================
+   MOTION
+   Continuous dash flow for the diagrams. Cheap: compositor
+   only touches stroke-dashoffset on a handful of paths.
+   ============================================================ */
+@keyframes dash-flow {
   to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
     transform: translateY(0);
   }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-@keyframes fade-up {
+/* Hero entrance. Deliberately CSS rather than Framer Motion: the hero
+   holds the LCP element, and a JS-driven reveal would keep it at
+   opacity 0 until hydration finishes. */
+@keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -192,64 +246,70 @@
   }
 }
 
-.line-mask {
-  overflow: hidden;
-  display: block;
+.rise {
+  animation: rise-in 700ms var(--ease-settle) both;
+  animation-delay: var(--d, 0ms);
 }
 
-.line-mask > span {
-  display: block;
-  animation: line-rise 900ms var(--ease-settle) both;
-  animation-delay: var(--rise-delay, 0ms);
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
-.fade-up {
-  animation: fade-up 800ms var(--ease-settle) both;
-  animation-delay: var(--rise-delay, 0ms);
+.flow {
+  stroke-dasharray: 5 5;
+  animation: dash-flow 3s linear infinite;
+}
+
+.flow-slow {
+  stroke-dasharray: 4 6;
+  animation: dash-flow 6s linear infinite;
+}
+
+.floaty {
+  animation: float-y 7s ease-in-out infinite;
 }
 
 /* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--ink);
+  background: var(--paper);
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--line-2);
-  border: 3px solid var(--ink);
+  border: 4px solid var(--paper);
   border-radius: 999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
 }
 
 /* ============================================================
-   MOTION PREFERENCES
-   Every animation above collapses to nothing here.
+   REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
   }
 }

@@ -215,3 +215,81 @@ export const navItems = [
   { label: "Recognition", href: "#recognition" },
   { label: "Contact", href: "#contact" },
 ] as const;
+
+/**
+ * Skills reframed as engineering capabilities. Every item from the
+ * résumé's skills list is preserved here, grouped by what it lets me
+ * build rather than by category label.
+ */
+export const capabilities = [
+  {
+    icon: "payments",
+    title: "Payment Infrastructure",
+    blurb:
+      "Gateway integrations, transaction workflows, merchant onboarding and virtual bank account reconciliation across five providers.",
+    items: ["XPay", "Razorpay", "PayU", "PayGlocal", "PayPal", "Virtual Bank Accounts"],
+  },
+  {
+    icon: "server",
+    title: "Backend & APIs",
+    blurb:
+      "REST services, webhook handlers and rule engines built on Django REST Framework and Node, designed for retries and idempotency.",
+    items: ["Django", "Django REST Framework", "Node.js", "Express.js", "REST APIs", "Webhooks"],
+  },
+  {
+    icon: "database",
+    title: "Data & Persistence",
+    blurb:
+      "Relational schema design for financial records, plus document stores where the shape of the data earns it.",
+    items: ["PostgreSQL", "MongoDB", "Prisma", "SQL"],
+  },
+  {
+    icon: "code",
+    title: "Languages",
+    blurb:
+      "Python for services, TypeScript across the stack, and the fundamentals underneath both.",
+    items: ["Python", "TypeScript", "JavaScript", "Java", "C", "C++"],
+  },
+  {
+    icon: "layout",
+    title: "Frontend Systems",
+    blurb:
+      "Internal operations consoles and product interfaces — the screens that make backend systems operable.",
+    items: ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "TanStack Query"],
+  },
+  {
+    icon: "gauge",
+    title: "Tooling & Observability",
+    blurb:
+      "Dashboards, request inspection and version control discipline — knowing what production is doing before someone reports it.",
+    items: ["Git", "Grafana", "Postman", "Vercel", "Codex"],
+  },
+  {
+    icon: "sparkle",
+    title: "AI-Assisted Development",
+    blurb:
+      "Claude Code as a working tool: exploring architecture, tracing bugs, refactoring safely and reviewing diffs.",
+    items: [
+      "Claude Code",
+      "Architecture exploration",
+      "Debugging",
+      "Refactoring",
+      "Documentation",
+      "Code review",
+    ],
+  },
+  {
+    icon: "shield",
+    title: "Auth & Integrations",
+    blurb:
+      "Session and identity flows, third-party service wiring, and the plumbing that connects products to the outside world.",
+    items: ["Clerk", "Lucia Auth", "Google OAuth", "Stream Video", "Stream Chat", "UploadThing"],
+  },
+] as const;
+
+/** Headline metrics for the hero trust strip. */
+export const metrics = [
+  { value: "5", label: "Payment gateways integrated" },
+  { value: "6+", label: "Products shipped to production" },
+  { value: "2026", label: "SIH team leader" },
+] as const;

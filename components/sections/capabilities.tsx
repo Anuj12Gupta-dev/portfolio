@@ -1,57 +1,61 @@
-import type { CSSProperties } from "react";
-import { skills } from "@/lib/content";
-import { Section, SectionHeading } from "@/components/primitives";
-import { cn } from "@/lib/utils";
+import { capabilities } from "@/lib/content";
+import { Container, IconTile, SectionHeader, Tag } from "@/components/ui";
+import { Icon, type IconKey } from "@/components/icons";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
 export function Capabilities() {
   return (
-    <Section id="capabilities" index="04" label="Capabilities">
-      <SectionHeading
-        id="capabilities"
-        lede="The tools I reach for. Listed plainly, because a percentage next to a framework name has never told anyone anything."
-      >
-        What I work with.
-      </SectionHeading>
+    <section id="capabilities" aria-labelledby="capabilities-heading" className="scroll-mt-24">
+      <Container>
+        <div className="py-20 md:py-28 lg:py-32">
+          <Reveal>
+            <SectionHeader
+              id="capabilities-heading"
+              badge="Capabilities"
+              align="center"
+              title="What I can build for you"
+              lede="Grouped by what they let me ship rather than by category label — because a percentage next to a framework name has never told anyone anything."
+            />
+          </Reveal>
 
-      {/*
-        Shared-divider grid. Two tricks are at work:
-
-        1. `-mt-px -ml-px` pushes each cell's outer rules under the
-           container edge, where overflow-hidden clips them — so only
-           internal dividers survive, at any breakpoint, no index maths.
-        2. The outer `-mx-6` exactly cancels each cell's `px-6`, so the
-           first column's text lands flush with the section heading
-           instead of sitting a cell-padding's width to its right.
-      */}
-      <div className="-mx-6 overflow-hidden border-y border-dashed border-line" data-reveal>
-        <div className="-mt-px -ml-px grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {skills.map((category, i) => (
-            <div
-              key={category.group}
-              className={cn(
-                "border-t border-l border-dashed border-line px-6 py-8 transition-colors duration-500 hover:bg-ink-2 sm:py-10",
-                category.wide && "sm:col-span-2 lg:col-span-3",
-              )}
-              data-reveal
-              style={{ "--reveal-delay": `${i * 60}ms` } as CSSProperties}
-            >
-              <h3 className="eyebrow">{category.group}</h3>
-              <ul
-                className={cn(
-                  "mt-5",
-                  category.wide ? "flex flex-wrap gap-x-8 gap-y-2" : "space-y-2",
-                )}
+          {/*
+            Shared-divider grid: cells carry top and left rules, and the
+            wrapper's negative offsets tuck the outermost ones under the
+            frame where overflow-hidden clips them. Internal dividers
+            survive at every breakpoint with no index maths.
+          */}
+          <Reveal delay={0.08}>
+            <div className="mt-14 overflow-hidden rounded-card border border-line bg-surface shadow-soft">
+              <RevealGroup
+                className="-mt-px -ml-px grid sm:grid-cols-2 lg:grid-cols-4"
+                stagger={0.05}
               >
-                {category.items.map((item) => (
-                  <li key={item} className="text-[0.9375rem] leading-snug text-soft">
-                    {item}
-                  </li>
+                {capabilities.map((cap) => (
+                  <RevealItem
+                    key={cap.title}
+                    className="group border-t border-l border-line p-6 transition-colors duration-500 hover:bg-sunken/45 sm:p-7"
+                  >
+                    <IconTile className="transition-colors duration-500 group-hover:border-line-2">
+                      <Icon name={cap.icon as IconKey} />
+                    </IconTile>
+
+                    <h3 className="mt-5 text-[16.5px] tracking-[-0.015em]">{cap.title}</h3>
+                    <p className="mt-2.5 text-[14px] leading-[1.6] text-body">{cap.blurb}</p>
+
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {cap.items.map((item) => (
+                        <Tag key={item} className="text-[11.5px]">
+                          {item}
+                        </Tag>
+                      ))}
+                    </div>
+                  </RevealItem>
                 ))}
-              </ul>
+              </RevealGroup>
             </div>
-          ))}
+          </Reveal>
         </div>
-      </div>
-    </Section>
+      </Container>
+    </section>
   );
 }

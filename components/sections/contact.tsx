@@ -1,92 +1,103 @@
-import type { CSSProperties } from "react";
 import { profile } from "@/lib/content";
-import { ArrowUpRight, Container } from "@/components/primitives";
+import { ArrowRight, ArrowUpRight, Badge, Container } from "@/components/ui";
+import { Icon, type IconKey } from "@/components/icons";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
-const channels = [
-  { label: "Email", value: profile.email, href: `mailto:${profile.email}`, external: false },
-  { label: "Phone", value: profile.phone, href: profile.phoneHref, external: false },
-  { label: "GitHub", value: profile.githubHandle, href: profile.github, external: true },
-  { label: "LinkedIn", value: profile.linkedinHandle, href: profile.linkedin, external: true },
+const CHANNELS: readonly {
+  icon: IconKey;
+  label: string;
+  value: string;
+  href: string;
+  external?: boolean;
+}[] = [
+  { icon: "mail", label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+  { icon: "phone", label: "Phone", value: profile.phone, href: profile.phoneHref },
+  {
+    icon: "github",
+    label: "GitHub",
+    value: profile.githubHandle,
+    href: profile.github,
+    external: true,
+  },
+  {
+    icon: "linkedin",
+    label: "LinkedIn",
+    value: profile.linkedinHandle,
+    href: profile.linkedin,
+    external: true,
+  },
 ];
 
 export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-24">
       <Container>
-        <div className="grid grid-cols-1 gap-y-10 py-24 md:py-32 lg:grid-cols-12 lg:gap-x-12 lg:py-40">
-          <div className="lg:col-span-3">
-            <div className="flex items-center gap-4 lg:sticky lg:top-28 lg:block" data-reveal>
-              <span className="eyebrow tabular-nums text-muted lg:block">07</span>
-              <span aria-hidden className="h-px w-8 bg-line lg:hidden" />
-              <span className="eyebrow lg:mt-3 lg:block">Contact</span>
-            </div>
-          </div>
+        <div className="pb-20 md:pb-28 lg:pb-32">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-card border border-line bg-surface px-6 py-14 text-center shadow-card sm:px-10 sm:py-18">
+              {/* blueprint texture inside the CTA slab */}
+              <div aria-hidden className="pointer-events-none absolute inset-0">
+                <div className="dot-field fade-edges absolute inset-0" />
+              </div>
 
-          <div className="lg:col-span-9">
-            <h2
-              id="contact-heading"
-              className="headline text-[clamp(2.25rem,7vw,5rem)]"
-              data-reveal
-            >
-              Let&rsquo;s build something
-              <br className="hidden sm:block" />{" "}
-              <span className="text-muted">worth shipping.</span>
-            </h2>
+              <div className="relative">
+                <Badge>Contact</Badge>
+                <h2
+                  id="contact-heading"
+                  className="mx-auto mt-5 max-w-2xl text-[clamp(1.9rem,4.5vw,3rem)] leading-[1.08] tracking-[-0.035em]"
+                >
+                  Let&rsquo;s build something worth shipping
+                </h2>
+                <p className="mx-auto mt-5 max-w-xl text-[16.5px] leading-[1.65] text-body">
+                  I&rsquo;m open to full-time roles, internships and collaborations. The
+                  fastest route is a direct email.
+                </p>
 
-            <p
-              className="measure mt-8 text-base leading-relaxed text-soft md:text-lg"
-              data-reveal
-              style={{ "--reveal-delay": "80ms" } as CSSProperties}
-            >
-              I&rsquo;m open to full-time roles, internships and collaborations. If you have
-              something in mind, the fastest route is a direct email.
-            </p>
-
-            <div
-              className="mt-12 flex flex-wrap items-center gap-3"
-              data-reveal
-              style={{ "--reveal-delay": "140ms" } as CSSProperties}
-            >
-              <a
-                href={`mailto:${profile.email}`}
-                className="group inline-flex items-center gap-2 rounded-full bg-bone px-5 py-2.5 text-sm font-medium text-ink transition-opacity duration-300 hover:opacity-85"
-              >
-                Start a conversation
-                <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-              <a
-                href={profile.resume}
-                download
-                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-soft transition-colors duration-300 hover:border-line-2 hover:bg-ink-3 hover:text-bone"
-              >
-                Download résumé
-              </a>
-            </div>
-
-            <ul
-              className="mt-16 border-t border-dashed border-line"
-              data-reveal
-              style={{ "--reveal-delay": "200ms" } as CSSProperties}
-            >
-              {channels.map((channel) => (
-                <li key={channel.label} className="border-b border-dashed border-line">
+                <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
                   <a
-                    href={channel.href}
-                    {...(channel.external
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    className="group -mx-4 flex items-baseline justify-between gap-6 px-4 py-6 transition-colors duration-500 hover:bg-ink-2 md:-mx-6 md:px-6"
+                    href={`mailto:${profile.email}`}
+                    className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-paper shadow-soft transition-all duration-300 hover:-translate-y-px hover:shadow-card"
                   >
-                    <span className="eyebrow">{channel.label}</span>
-                    <span className="flex items-center gap-3 text-sm text-bone sm:text-base">
-                      {channel.value}
-                      <ArrowUpRight className="size-4 text-line-2 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-bone" />
-                    </span>
+                    Start a conversation
+                    <ArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
                   </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  <a
+                    href={profile.resume}
+                    download
+                    className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-6 py-3 text-[15px] font-medium text-ink shadow-soft transition-all duration-300 hover:-translate-y-px hover:border-line-2 hover:shadow-card"
+                  >
+                    <Icon name="download" className="size-4" />
+                    Download résumé
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <RevealGroup className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {CHANNELS.map((c) => (
+              <RevealItem key={c.label} className="h-full">
+                <a
+                  href={c.href}
+                  {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="card card-hover group flex h-full items-center gap-4 p-5"
+                >
+                  <span className="grid size-10 shrink-0 place-items-center rounded-tile border border-line bg-sunken text-ink">
+                    <Icon name={c.icon} className="size-[19px]" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="eyebrow block">{c.label}</span>
+                    {/* Contact details must stay readable in full — break
+                        rather than truncate when the column is narrow. */}
+                    <span className="mt-1.5 block text-[13.5px] break-all text-ink">
+                      {c.value}
+                    </span>
+                  </span>
+                  <ArrowUpRight className="size-4 shrink-0 text-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink" />
+                </a>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </div>
       </Container>
     </section>

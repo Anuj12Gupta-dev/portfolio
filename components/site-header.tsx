@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { navItems, profile } from "@/lib/content";
-import { Container } from "@/components/primitives";
+import { Container, ArrowRight } from "@/components/ui";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
+  const [active, setActive] = useState("");
 
-  /* Hairline appears only once the page has moved. */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -18,27 +18,21 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Scroll-spy: marks the section currently under the reader. */
   useEffect(() => {
     const sections = navItems
-      .map((item) => document.querySelector(item.href))
+      .map((i) => document.querySelector(i.href))
       .filter((el): el is Element => Boolean(el));
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
+    if (!sections.length) return;
+    const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
-        }
+        for (const e of entries) if (e.isIntersecting) setActive(`#${e.target.id}`);
       },
-      { rootMargin: "-20% 0px -70% 0px" },
+      { rootMargin: "-25% 0px -68% 0px" },
     );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
   }, []);
 
-  /* Lock the page while the mobile panel is open. */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -55,33 +49,41 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled || open
-          ? "border-b border-dashed border-line bg-ink/85 backdrop-blur-[6px]"
+          ? "border-b border-line bg-paper/85 backdrop-blur-md"
           : "border-b border-transparent",
       )}
     >
       <Container>
-        <div className="flex h-16 items-center justify-between md:h-20">
-          <a
-            href="#top"
-            className="group flex items-baseline gap-3 text-sm font-medium tracking-tight"
-          >
-            <span>{profile.name}</span>
-            <span className="eyebrow hidden transition-colors duration-300 group-hover:text-soft xl:inline">
-              {profile.role}
+        <div className="flex h-16 items-center justify-between gap-6">
+          {/* wordmark */}
+          <a href="#top" className="group flex items-center gap-2.5">
+            <span className="grid size-8 place-items-center rounded-[9px] bg-ink text-paper">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden className="size-[18px]">
+                <path
+                  d="M5 16.5 12 4l7 12.5M8.5 16.5h7"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <span className="text-[15px] font-semibold tracking-[-0.02em] text-ink">
+              {profile.name}
             </span>
           </a>
 
-          <nav aria-label="Sections" className="hidden items-center gap-8 lg:flex">
+          <nav aria-label="Sections" className="hidden items-center gap-7 lg:flex">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 aria-current={active === item.href ? "true" : undefined}
                 className={cn(
-                  "link-underline text-sm transition-colors duration-300 hover:text-bone",
-                  active === item.href ? "text-bone" : "text-muted",
+                  "text-[14.5px] transition-colors duration-300 hover:text-ink",
+                  active === item.href ? "text-ink" : "text-body",
                 )}
               >
                 {item.label}
@@ -89,13 +91,15 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            <ThemeToggle />
             <a
               href={profile.resume}
               download
-              className="hidden rounded-full bg-bone px-4 py-2 text-sm font-medium text-ink transition-opacity duration-300 hover:opacity-85 sm:inline-block"
+              className="group hidden items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper shadow-soft transition-all duration-300 hover:-translate-y-px hover:shadow-card sm:inline-flex"
             >
               Résumé
+              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </a>
 
             <button
@@ -104,19 +108,19 @@ export function SiteHeader() {
               aria-expanded={open}
               aria-controls="mobile-nav"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="-mr-2 flex size-10 items-center justify-center lg:hidden"
+              className="grid size-9 place-items-center rounded-[10px] border border-line bg-surface text-ink shadow-soft lg:hidden"
             >
-              <span className="relative block h-3 w-5">
+              <span className="relative block h-2.5 w-4">
                 <span
                   className={cn(
-                    "absolute left-0 block h-px w-5 bg-bone transition-transform duration-300",
-                    open ? "top-1.5 rotate-45" : "top-0",
+                    "absolute left-0 block h-px w-4 bg-current transition-all duration-300",
+                    open ? "top-1 rotate-45" : "top-0",
                   )}
                 />
                 <span
                   className={cn(
-                    "absolute left-0 block h-px w-5 bg-bone transition-transform duration-300",
-                    open ? "top-1.5 -rotate-45" : "top-3",
+                    "absolute left-0 block h-px w-4 bg-current transition-all duration-300",
+                    open ? "top-1 -rotate-45" : "top-2.5",
                   )}
                 />
               </span>
@@ -125,32 +129,30 @@ export function SiteHeader() {
         </div>
       </Container>
 
-      {/* Mobile panel */}
+      {/* mobile panel */}
       <div
         id="mobile-nav"
         hidden={!open}
-        className="dot-band max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-dashed border-line bg-ink lg:hidden"
+        className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-paper lg:hidden"
       >
         <Container>
-          <nav aria-label="Sections" className="flex flex-col py-4">
-            {navItems.map((item, i) => (
+          <nav aria-label="Sections" className="grid gap-1 py-4">
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="group flex items-baseline justify-between border-b border-dashed border-line py-5 text-2xl tracking-tight transition-colors duration-300 last:border-0 hover:text-soft"
+                className="flex items-center justify-between rounded-xl px-3 py-3 text-[17px] text-ink transition-colors duration-300 hover:bg-surface"
               >
                 {item.label}
-                <span className="eyebrow tabular-nums text-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                <ArrowRight className="size-4 text-muted" />
               </a>
             ))}
             <a
               href={profile.resume}
               download
               onClick={() => setOpen(false)}
-              className="mt-6 mb-2 rounded-full bg-bone px-5 py-3 text-center text-sm font-medium text-ink"
+              className="mt-3 mb-2 rounded-full bg-ink px-5 py-3 text-center text-sm font-medium text-paper"
             >
               Download résumé
             </a>

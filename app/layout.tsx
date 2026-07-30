@@ -31,11 +31,10 @@ export const metadata: Metadata = {
     "Django",
     "Django REST Framework",
     "Fintech",
+    "Payment gateway integration",
     "Next.js",
-    "React",
     "TypeScript",
-    "Node.js",
-    "Web Development",
+    "PostgreSQL",
   ],
   authors: [{ name: "Anuj Gupta", url: siteUrl }],
   creator: "Anuj Gupta",
@@ -57,19 +56,31 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "dark",
-  themeColor: "#0a0b0d",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e9eae6" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0f14" },
+  ],
 };
+
+/**
+ * Applies the stored theme before first paint. Light is the default —
+ * an absent preference is not treated as "follow the OS", so the site
+ * always opens in its intended default.
+ */
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light')}catch(e){document.documentElement.setAttribute('data-theme','light')}})()`;
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" data-theme="light" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="font-sans">
         <a
           href="#profile"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-full focus:bg-bone focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-ink"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-paper"
         >
           Skip to content
         </a>

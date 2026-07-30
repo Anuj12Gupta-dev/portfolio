@@ -1,58 +1,87 @@
-import type { CSSProperties } from "react";
 import { projects } from "@/lib/content";
-import { ArrowUpRight, Section, SectionHeading } from "@/components/primitives";
+import { ArrowUpRight, Container, SectionHeader, Tag } from "@/components/ui";
+import {
+  ProjectPreview,
+  type PreviewKind,
+} from "@/components/illustrations/project-preview";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+
+/** Each product gets its own wireframe so the grid reads as six things. */
+const PREVIEW: Record<string, PreviewKind> = {
+  PeerPrep: "editor",
+  Spendly: "dashboard",
+  Socially: "feed",
+  "PrepMate AI": "chat",
+  "CrowdFund DApp": "chain",
+  "Ghumkad Travels": "map",
+};
 
 export function Work() {
   return (
-    <Section id="work" index="03" label="Selected work">
-      <SectionHeading
-        id="work"
-        lede="Six applications, all live and publicly available. Real-time collaboration, social platforms, AI tooling and on-chain systems."
-      >
-        Work that ships.
-      </SectionHeading>
+    <section id="work" aria-labelledby="work-heading" className="scroll-mt-24">
+      <Container>
+        <div className="py-20 md:py-28 lg:py-32">
+          <Reveal>
+            <SectionHeader
+              id="work-heading"
+              badge="Selected work"
+              align="center"
+              title="Six products, all live"
+              lede="Real-time collaboration, AI tooling, social platforms and on-chain systems — each designed, built and deployed end to end."
+            />
+          </Reveal>
 
-      <ol className="border-t border-dashed border-line">
-        {projects.map((project, i) => (
-          <li
-            key={project.title}
-            className="border-b border-dashed border-line"
-            data-reveal
-            style={{ "--reveal-delay": `${Math.min(i, 4) * 70}ms` } as CSSProperties}
-          >
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group -mx-4 block px-4 py-9 transition-colors duration-500 hover:bg-ink-2 md:-mx-6 md:px-6 md:py-11"
-            >
-              <article className="grid grid-cols-1 gap-x-12 gap-y-4 md:grid-cols-12">
-                <div className="flex items-baseline gap-4 md:col-span-3 md:block md:pt-2">
-                  <span className="eyebrow tabular-nums text-muted">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="eyebrow md:mt-3 md:block">{project.year}</span>
-                </div>
+          <RevealGroup className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <RevealItem key={project.title} className="h-full">
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="card card-hover group flex h-full flex-col overflow-hidden"
+                >
+                  {/* wireframe preview */}
+                  <div className="border-b border-line bg-sunken/50 p-5">
+                    <ProjectPreview
+                      kind={PREVIEW[project.title] ?? "dashboard"}
+                      className="h-auto w-full"
+                    />
+                  </div>
 
-                <div className="md:col-span-9">
-                  <h3 className="flex items-start justify-between gap-6 text-2xl font-medium tracking-tight md:text-[1.75rem]">
-                    <span className="transition-colors duration-300">{project.title}</span>
-                    <ArrowUpRight className="mt-1.5 size-5 shrink-0 text-line-2 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-bone" />
-                  </h3>
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="text-[19px] tracking-[-0.02em]">{project.title}</h3>
+                      <span className="mt-0.5 flex items-center gap-2">
+                        <span className="font-mono text-[11px] text-muted">
+                          {project.year}
+                        </span>
+                        <ArrowUpRight className="size-4 text-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink" />
+                      </span>
+                    </div>
 
-                  <p className="measure mt-4 text-base leading-relaxed text-soft">
-                    {project.summary}
-                  </p>
+                    <p className="mt-3 flex-1 text-[14.5px] leading-[1.6] text-body">
+                      {project.summary}
+                    </p>
 
-                  <p className="mt-6 font-mono text-[11px] leading-relaxed tracking-wide text-muted">
-                    {project.stack.join("  ·  ")}
-                  </p>
-                </div>
-              </article>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </Section>
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {project.stack.slice(0, 4).map((s) => (
+                        <Tag key={s} className="text-[11.5px]">
+                          {s}
+                        </Tag>
+                      ))}
+                      {project.stack.length > 4 ? (
+                        <span className="inline-flex items-center rounded-full border border-line px-2.5 py-1 text-[11.5px] text-muted">
+                          +{project.stack.length - 4}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                </a>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </Container>
+    </section>
   );
 }

@@ -1,62 +1,72 @@
-import type { CSSProperties } from "react";
 import { experience } from "@/lib/content";
-import { Section, SectionHeading } from "@/components/primitives";
+import { Badge, Card, Container, SectionHeader, Tag } from "@/components/ui";
+import { PipelineDiagram } from "@/components/illustrations/pipeline";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
 export function Experience() {
   return (
-    <Section id="experience" index="02" label="Experience">
-      <SectionHeading
-        id="experience"
-        lede="Backend engineering on live payment rails — where a rounding error is a real rupee and a failed webhook is a real reconciliation problem."
-      >
-        Fintech infrastructure, in production.
-      </SectionHeading>
+    <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24">
+      <Container>
+        <div className="py-20 md:py-28 lg:py-32">
+          <Reveal>
+            <SectionHeader
+              id="experience-heading"
+              badge="Experience"
+              align="center"
+              title="Fintech infrastructure, in production"
+              lede="Backend engineering on live payment rails — where a failed webhook is a real reconciliation problem and a rounding error is a real rupee."
+            />
+          </Reveal>
 
-      <ol className="border-t border-dashed border-line">
-        {experience.map((role, i) => (
-          <li
-            key={role.title}
-            className="border-b border-dashed border-line"
-            data-reveal
-            style={{ "--reveal-delay": `${i * 90}ms` } as CSSProperties}
-          >
-            <article className="grid grid-cols-1 gap-x-12 gap-y-4 py-9 md:grid-cols-12 md:py-12">
-              <p className="eyebrow md:col-span-3 md:pt-1.5">{role.period}</p>
+          {/* the lifecycle this role owns */}
+          <Reveal delay={0.1}>
+            <div className="mt-14 overflow-hidden rounded-card border border-line bg-surface px-5 py-7 shadow-soft sm:px-10 sm:py-8">
+              <PipelineDiagram className="mx-auto h-auto w-full max-w-[860px]" />
+            </div>
+          </Reveal>
 
-              <div className="md:col-span-9">
-                <h3 className="text-xl font-medium tracking-tight md:text-2xl">{role.title}</h3>
-                <p className="mt-1.5 text-sm text-muted">{role.org}</p>
+          {/* the role */}
+          {experience.map((role) => (
+            <Reveal key={role.title} delay={0.14}>
+              <Card className="mt-6 overflow-hidden">
+                <div className="flex flex-col gap-4 border-b border-line p-6 sm:flex-row sm:items-start sm:justify-between sm:p-8">
+                  <div>
+                    <h3 className="text-[22px] tracking-[-0.025em]">{role.title}</h3>
+                    <p className="mt-1.5 text-[15px] text-body">{role.org}</p>
+                  </div>
+                  <Badge className="w-fit shrink-0">{role.period}</Badge>
+                </div>
 
-                <p className="measure mt-5 text-base leading-relaxed text-soft">
-                  {role.description}
-                </p>
+                <div className="p-6 sm:p-8">
+                  <p className="measure text-[16px] leading-[1.7] text-body">
+                    {role.description}
+                  </p>
 
-                <ul className="mt-7 space-y-3.5">
-                  {role.highlights.map((point) => (
-                    <li
-                      key={point}
-                      className="measure relative pl-6 text-[0.9375rem] leading-relaxed text-soft before:absolute before:top-[0.72em] before:left-0 before:h-px before:w-3 before:bg-line-2 before:content-['']"
-                    >
-                      {point}
-                    </li>
-                  ))}
-                </ul>
+                  <RevealGroup className="mt-8 grid gap-x-10 gap-y-5 sm:grid-cols-2">
+                    {role.highlights.map((point) => (
+                      <RevealItem key={point}>
+                        <div className="flex gap-3.5">
+                          <span
+                            aria-hidden
+                            className="mt-[7px] size-1.5 shrink-0 rounded-full bg-accent"
+                          />
+                          <p className="text-[15px] leading-[1.6] text-body">{point}</p>
+                        </div>
+                      </RevealItem>
+                    ))}
+                  </RevealGroup>
 
-                <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
-                  {role.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full border border-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted"
-                    >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          </li>
-        ))}
-      </ol>
-    </Section>
+                  <div className="mt-8 flex flex-wrap gap-2 border-t border-line pt-6">
+                    {role.tags.map((t) => (
+                      <Tag key={t}>{t}</Tag>
+                    ))}
+                  </div>
+                </div>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </Container>
+    </section>
   );
 }
